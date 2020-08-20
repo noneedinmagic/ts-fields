@@ -2,8 +2,8 @@ import { FormatKey, FormatValue } from '../types/formats';
 import * as defaults from './default';
 
 export class FormatCollection {
-  constructor (
-    protected readonly _formats: Map<FormatKey, FormatValue> = new Map,
+  constructor(
+    protected readonly _formats: Map<FormatKey, FormatValue> = new Map(),
   ) {}
 
   public get(key: FormatKey): FormatValue {
@@ -16,5 +16,5 @@ export class FormatCollection {
   }
 }
 
-const _globalInstance = new FormatCollection;
+const _globalInstance = new FormatCollection();
 export default _globalInstance;
