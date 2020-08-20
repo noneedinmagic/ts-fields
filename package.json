@@ -1,0 +1,42 @@
+{
+  "name": "@noneedinmagic/ts-fields",
+  "version": "0.0.0",
+  "description": "Collection of class field decorators for TypeScript",
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "lint": "eslint src/**/*",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noneedinmagic/ts-fields.git"
+  },
+  "author": "Tron <noneedinmagic@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/noneedinmagic/ts-fields/issues"
+  },
+  "homepage": "https://github.com/noneedinmagic/ts-fields#readme",
+  "devDependencies": {
+    "@types/node": "14.0.27",
+    "@typescript-eslint/eslint-plugin": "3.8.0",
+    "@typescript-eslint/parser": "3.8.0",
+    "eslint": "7.6.0",
+    "eslint-plugin-json": "2.1.2",
+    "prettier": "2.0.5",
+    "rimraf": "3.0.2",
+    "typescript": "3.9.7"
+  },
+  "peerDependencies": {
+    "class-transformer": ">=0.2.0",
+    "moment": ">=2.24.0"
+  },
+  "optionalDependencies": {
+    "typeorm": ">=0.2.18"
+  }
+}
