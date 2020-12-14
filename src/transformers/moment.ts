@@ -1,7 +1,7 @@
 import { ValueTransformer } from 'typeorm';
 import { Moment } from 'moment';
 import * as moment from 'moment';
-import * as dbFormats from '../formats/db';
+import dbFormats from '../formats/db';
 import collection from '../formats';
 // import { BaseFormatKeyDictionary } from '../types/formats';
 

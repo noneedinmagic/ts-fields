@@ -1,5 +1,5 @@
 import { FormatKey, FormatValue } from '../types/formats';
-import * as defaults from './default';
+import defaults from './default';
 
 export class FormatCollection {
   constructor(
