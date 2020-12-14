@@ -6,31 +6,41 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ValueTransformer,
 } from 'typeorm';
 
-import formats from '../formats';
+// import formats from '../formats';
 import { DateTransformer, DatetimeTransformer } from '../transformers/moment';
 import { TPropertyDecorator } from '../types/decorators';
-import { BaseFormatKeyDictionary } from '../types/formats';
+// import { BaseFormatKeyDictionary } from '../types/formats';
 import { applyDecorators } from '../utils/decorators';
+
+function transformFrom<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
+  return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.from(acc), value);
+}
+function transformTo<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
+  return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.to(acc), value);
+}
 
 export function DateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DateTransformer();
+
   return applyDecorators(
     Column({
       type: 'date',
-      transformer: new DateTransformer,
 
       ...columnOptions,
+
+      transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => (value ? moment(value) : undefined), {
+    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string =>
-        value ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATE)) : undefined,
+      (value: Moment): string => transformTo<Moment, string>(value, transformer),
       { toPlainOnly: true },
     ),
   );
@@ -39,22 +49,22 @@ export function DateMomentColumn(
 export function DatetimeMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+
   return applyDecorators(
     Column({
       type: 'datetime',
-      transformer: new DatetimeTransformer,
 
       ...columnOptions,
+
+      transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => (value ? moment(value) : undefined), {
+    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string =>
-        value
-          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
-          : undefined,
+      (value: Moment): string => transformTo<Moment, string>(value, transformer),
       { toPlainOnly: true },
     ),
   );
@@ -63,25 +73,25 @@ export function DatetimeMomentColumn(
 export function CreateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+
   return applyDecorators(
     CreateDateColumn({
       name: 'created_at',
       type: 'datetime',
       precision: null,
       default: () => 'CURRENT_TIMESTAMP',
-      transformer: new DatetimeTransformer,
 
       ...columnOptions,
+
+      transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => (value ? moment(value) : undefined), {
+    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string =>
-        value
-          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
-          : undefined,
+      (value: Moment): string => transformTo<Moment, string>(value, transformer),
       { toPlainOnly: true },
     ),
   );
@@ -90,6 +100,8 @@ export function CreateMomentColumn(
 export function UpdateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+
   return applyDecorators(
     UpdateDateColumn({
       name: 'updated_at',
@@ -97,19 +109,17 @@ export function UpdateMomentColumn(
       precision: null,
       default: () => 'CURRENT_TIMESTAMP',
       onUpdate: 'CURRENT_TIMESTAMP',
-      transformer: new DatetimeTransformer,
 
       ...columnOptions,
+
+      transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => (value ? moment(value) : undefined), {
+    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string =>
-        value
-          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
-          : undefined,
+      (value: Moment): string => transformTo<Moment, string>(value, transformer),
       { toPlainOnly: true },
     ),
   );
