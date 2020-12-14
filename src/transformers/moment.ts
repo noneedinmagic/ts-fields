@@ -1,21 +1,24 @@
 import { ValueTransformer } from 'typeorm';
 import { Moment } from 'moment';
 import * as moment from 'moment';
-import * as formats from '../formats/db';
-import { FormatKey } from '../types/formats';
+import * as dbFormats from '../formats/db';
+import collection from '../formats';
+import { BaseFormatKeyDictionary } from '../types/formats';
 
-function createMomentTransformer(format: string): ValueTransformer {
+function createMomentTransformer(dbFormat: string, parseFormat?: string): ValueTransformer {
   return {
-    from: (dbValue: string): Moment => (dbValue ? moment(dbValue) : undefined),
+    from: (dbValue: string): Moment => (dbValue ? moment(dbValue, parseFormat) : undefined),
     to: (value: Moment): string =>
-      value ? moment(value).format(format) : undefined,
+      value ? moment(value).format(dbFormat) : undefined,
   };
 }
 
 export const DatetimeTransformer: ValueTransformer = createMomentTransformer(
-  formats[FormatKey.DATETIME],
+  dbFormats[BaseFormatKeyDictionary.DATETIME],
+  collection.get(BaseFormatKeyDictionary.DATETIME),
 );
 
 export const DateTransformer: ValueTransformer = createMomentTransformer(
-  formats[FormatKey.DATE],
+  dbFormats[BaseFormatKeyDictionary.DATE],
+  collection.get(BaseFormatKeyDictionary.DATE),
 );

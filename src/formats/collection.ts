@@ -16,5 +16,5 @@ export class FormatCollection {
   }
 }
 
-const _globalInstance = new FormatCollection();
-export default _globalInstance;
+// const _globalInstance = new FormatCollection();
+// export default _globalInstance;

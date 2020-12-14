@@ -1,7 +1,7 @@
 import { TPropertyDecorator } from '../types';
 import { applyDecorators } from '../utils';
-import formats from '../formats/collection';
-import { FormatKey } from '../types';
+import formats from '../formats';
+import { BaseFormatKeyDictionary } from '../types';
 import { Transform, Type } from 'class-transformer';
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -21,9 +21,9 @@ export function MomentField(format: string): TPropertyDecorator {
 }
 
 export function DateMomentField(): TPropertyDecorator {
-  return MomentField(formats.get(FormatKey.DATE));
+  return MomentField(formats.get(BaseFormatKeyDictionary.DATE));
 }
 
 export function DatetimeMomentField(): TPropertyDecorator {
-  return MomentField(formats.get(FormatKey.DATETIME));
+  return MomentField(formats.get(BaseFormatKeyDictionary.DATETIME));
 }

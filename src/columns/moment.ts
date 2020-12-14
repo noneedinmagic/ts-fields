@@ -8,10 +8,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import formats from '../formats/collection';
+import formats from '../formats';
 import { DateTransformer, DatetimeTransformer } from '../transformers/moment';
 import { TPropertyDecorator } from '../types/decorators';
-import { FormatKey } from '../types/formats';
+import { BaseFormatKeyDictionary } from '../types/formats';
 import { applyDecorators } from '../utils/decorators';
 
 export function DateMomentColumn(
@@ -30,7 +30,7 @@ export function DateMomentColumn(
     }),
     Transform(
       (value: Moment): string =>
-        value ? moment(value).format(formats.get(FormatKey.DATE)) : undefined,
+        value ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATE)) : undefined,
       { toPlainOnly: true },
     ),
   );
@@ -53,7 +53,7 @@ export function DatetimeMomentColumn(
     Transform(
       (value: Moment): string =>
         value
-          ? moment(value).format(formats.get(FormatKey.DATETIME))
+          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
           : undefined,
       { toPlainOnly: true },
     ),
@@ -80,7 +80,7 @@ export function CreateMomentColumn(
     Transform(
       (value: Moment): string =>
         value
-          ? moment(value).format(formats.get(FormatKey.DATETIME))
+          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
           : undefined,
       { toPlainOnly: true },
     ),
@@ -108,7 +108,7 @@ export function UpdateMomentColumn(
     Transform(
       (value: Moment): string =>
         value
-          ? moment(value).format(formats.get(FormatKey.DATETIME))
+          ? moment(value).format(formats.get(BaseFormatKeyDictionary.DATETIME))
           : undefined,
       { toPlainOnly: true },
     ),
