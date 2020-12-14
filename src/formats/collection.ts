@@ -15,6 +15,3 @@ export class FormatCollection {
     return this;
   }
 }
-
-// const _globalInstance = new FormatCollection();
-// export default _globalInstance;

@@ -1,4 +1,8 @@
-import { FormatKey, FormatValue, BaseFormatKeyDictionary } from '../types/formats';
+import {
+  FormatKey,
+  FormatValue,
+  BaseFormatKeyDictionary,
+} from '../types/formats';
 
 const DATE: string = 'YYYY-MM-DD';
 const TIME: string = 'HH:mm:ss';

@@ -1,6 +1,6 @@
 {
   "name": "@noneedinmagic/ts-fields",
-  "version": "0.0.2-3",
+  "version": "0.0.2",
   "description": "Collection of class field decorators for TypeScript",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
