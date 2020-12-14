@@ -10,22 +10,23 @@ import {
 } from 'typeorm';
 
 // import formats from '../formats';
-import { DateTransformer, DatetimeTransformer } from '../transformers/moment';
+import { MomentTransformer, DateTransformer, DatetimeTransformer } from '../transformers/moment';
 import { TPropertyDecorator } from '../types/decorators';
 // import { BaseFormatKeyDictionary } from '../types/formats';
 import { applyDecorators } from '../utils/decorators';
 
-function transformFrom<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
-  return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.from(acc), value);
-}
-function transformTo<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
-  return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.to(acc), value);
-}
+// function transformFrom<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
+//   return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.from(acc), value);
+// }
+// function transformTo<F = unknown, T = F>(value: F, transformers: ValueTransformer | ValueTransformer[]): T {
+//   return (Array.isArray(transformers) ? transformers : [transformers]).reduce((acc, transformer) => transformer.to(acc), value);
+// }
 
 export function DateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
-  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DateTransformer();
+  const defaultTransformer: MomentTransformer = new DateTransformer();
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? defaultTransformer;
 
   return applyDecorators(
     Column({
@@ -36,11 +37,11 @@ export function DateMomentColumn(
       transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
+    Transform((value: string): Moment => defaultTransformer.fromPlain(value), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string => transformTo<Moment, string>(value, transformer),
+      (value: Moment): string => defaultTransformer.toPlain(value),
       { toPlainOnly: true },
     ),
   );
@@ -49,7 +50,8 @@ export function DateMomentColumn(
 export function DatetimeMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
-  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+  const defaultTransformer: MomentTransformer = new DatetimeTransformer();
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? defaultTransformer;
 
   return applyDecorators(
     Column({
@@ -60,11 +62,11 @@ export function DatetimeMomentColumn(
       transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
+    Transform((value: string): Moment => defaultTransformer.fromPlain(value), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string => transformTo<Moment, string>(value, transformer),
+      (value: Moment): string => defaultTransformer.toPlain(value),
       { toPlainOnly: true },
     ),
   );
@@ -73,7 +75,8 @@ export function DatetimeMomentColumn(
 export function CreateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
-  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+  const defaultTransformer: MomentTransformer = new DatetimeTransformer();
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? defaultTransformer;
 
   return applyDecorators(
     CreateDateColumn({
@@ -87,11 +90,11 @@ export function CreateMomentColumn(
       transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
+    Transform((value: string): Moment => defaultTransformer.fromPlain(value), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string => transformTo<Moment, string>(value, transformer),
+      (value: Moment): string => defaultTransformer.toPlain(value),
       { toPlainOnly: true },
     ),
   );
@@ -100,7 +103,8 @@ export function CreateMomentColumn(
 export function UpdateMomentColumn(
   columnOptions?: ColumnOptions,
 ): TPropertyDecorator {
-  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? new DatetimeTransformer();
+  const defaultTransformer: MomentTransformer = new DatetimeTransformer();
+  const transformer: ValueTransformer | ValueTransformer[] = columnOptions?.transformer ?? defaultTransformer;
 
   return applyDecorators(
     UpdateDateColumn({
@@ -115,11 +119,11 @@ export function UpdateMomentColumn(
       transformer,
     }),
     Type(() => moment),
-    Transform((value: string): Moment => transformFrom<string, Moment>(value, transformer), {
+    Transform((value: string): Moment => defaultTransformer.fromPlain(value), {
       toClassOnly: true,
     }),
     Transform(
-      (value: Moment): string => transformTo<Moment, string>(value, transformer),
+      (value: Moment): string => defaultTransformer.toPlain(value),
       { toPlainOnly: true },
     ),
   );

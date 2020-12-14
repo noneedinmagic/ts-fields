@@ -55,11 +55,19 @@ export abstract class MomentTransformer implements ValueTransformer {
   }
 
   public from(dbValue: string): Moment {
-    return (dbValue ? moment(dbValue, this.parseFormat) : undefined);
+    return (dbValue ? moment(dbValue, this.dbFormat) : undefined);
   }
 
   public to(value: Moment): string {
     return value ? moment(value).format(this.dbFormat): undefined;
+  }
+
+  public fromPlain(value: string): Moment {
+    return (value ? moment(value, this.parseFormat) : undefined);
+  }
+
+  public toPlain(value: Moment): string {
+    return value ? moment(value).format(this.parseFormat) : undefined;
   }
 }
 
