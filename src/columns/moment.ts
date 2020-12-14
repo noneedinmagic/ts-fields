@@ -20,7 +20,7 @@ export function DateMomentColumn(
   return applyDecorators(
     Column({
       type: 'date',
-      transformer: DateTransformer,
+      transformer: new DateTransformer,
 
       ...columnOptions,
     }),
@@ -42,7 +42,7 @@ export function DatetimeMomentColumn(
   return applyDecorators(
     Column({
       type: 'datetime',
-      transformer: DatetimeTransformer,
+      transformer: new DatetimeTransformer,
 
       ...columnOptions,
     }),
@@ -69,7 +69,7 @@ export function CreateMomentColumn(
       type: 'datetime',
       precision: null,
       default: () => 'CURRENT_TIMESTAMP',
-      transformer: DatetimeTransformer,
+      transformer: new DatetimeTransformer,
 
       ...columnOptions,
     }),
@@ -97,7 +97,7 @@ export function UpdateMomentColumn(
       precision: null,
       default: () => 'CURRENT_TIMESTAMP',
       onUpdate: 'CURRENT_TIMESTAMP',
-      transformer: DatetimeTransformer,
+      transformer: new DatetimeTransformer,
 
       ...columnOptions,
     }),
